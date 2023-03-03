@@ -1,5 +1,6 @@
 const express = require('express');
 const { login } = require('./controllers/user.controller');
+const { validateBody } = require('./middlewares/validateBody');
 // ...
 
 const app = express();
@@ -11,7 +12,7 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-app.post('/login', login);
+app.post('/login', validateBody, login);
 
 // ...
 
