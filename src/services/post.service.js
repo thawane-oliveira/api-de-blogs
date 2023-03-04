@@ -79,9 +79,22 @@ const editPostService = async (id, body) => {
   });
 };
 
+const deletePostService = async (id, body) => {
+  const { userToken } = body;
+
+  const data = await BlogPost.findByPk(id);
+  if (!data) return { status: 404, message: 'Post does not exist' };
+
+  if (data.userId !== userToken.id) return { status: 401, message: 'Unauthorized user' };
+
+  await BlogPost.destroy({ where: { id } });
+  return {};
+};
+
 module.exports = {
   createPostService,
   getPostsService,
   getPostByIdService,
   editPostService,
+  deletePostService,
 };

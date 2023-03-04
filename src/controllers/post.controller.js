@@ -2,7 +2,8 @@ const {
   createPostService,
   getPostsService,
   getPostByIdService,
-  editPostService } = require('../services/post.service');
+  editPostService,
+  deletePostService } = require('../services/post.service');
 
 const createPost = async (req, res) => {
   const { title, content, userToken, categoryIds } = req.body;
@@ -35,9 +36,19 @@ const editPost = async (req, res) => {
   return res.status(200).json(data);
 };
 
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+
+  const data = await deletePostService(id, req.body);
+
+  if (data.message) return res.status(data.status).json({ message: data.message });
+  return res.status(204).end();
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   editPost,
+  deletePost,
 };
