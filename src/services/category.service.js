@@ -9,4 +9,15 @@ const createCategoryService = async (name) => {
   return createdCategory;
 };
 
-module.exports = { createCategoryService };
+const getCategoriesService = async () => {
+  const data = await Category.findAll();
+  if (!data) {
+    return { message: 'Deu ruim' };
+  }
+  return data;
+};
+
+module.exports = {
+  createCategoryService,
+  getCategoriesService,
+};

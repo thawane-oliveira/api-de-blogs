@@ -1,5 +1,5 @@
 const express = require('express');
-const { createCategory } = require('./controllers/category.controller');
+const { createCategory, getAllCategories } = require('./controllers/category.controller');
 const { login, createUser, getAllUsers, getUserById } = require('./controllers/user.controller');
 const { validateBody, validateNewUser, validateToken } = require('./middlewares/validate');
 // ...
@@ -16,6 +16,8 @@ app.use(express.json());
 app.get('/user', validateToken, getAllUsers);
 
 app.get('/user/:id', validateToken, getUserById);
+
+app.get('/categories', validateToken, getAllCategories);
 
 app.post('/login', validateBody, login);
 
