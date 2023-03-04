@@ -1,4 +1,4 @@
-const { createPostService } = require('../services/post.service');
+const { createPostService, getPostsService } = require('../services/post.service');
 
 const createPost = async (req, res) => {
   const { title, content, userToken, categoryIds } = req.body;
@@ -9,6 +9,12 @@ const createPost = async (req, res) => {
   return res.status(201).json(result);
 };
 
+const getAllPosts = async (_req, res) => {
+  const posts = await getPostsService();
+  return res.status(200).json(posts);
+};
+
 module.exports = {
   createPost,
+  getAllPosts,
 };

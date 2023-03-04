@@ -1,4 +1,4 @@
-const { BlogPost, PostCategory, Category } = require('../models');
+const { BlogPost, PostCategory, Category, User } = require('../models');
 
 const findCategory = async (ctg) => {
   const data = await Promise.all(ctg.map((id) => Category.findByPk(id)));
@@ -21,6 +21,27 @@ const createPostService = async (newPost, categories) => {
   return { id, title, content, userId, updated, published };
 };
 
+const getPostsService = async () => {
+  const data = await BlogPost.findAll({
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      {
+        model: Category,
+        as: 'categories',
+      },
+    ],
+  });
+  if (!data) {
+    return { message: 'No posts found' };
+  }
+  return data;
+};
+
 module.exports = {
   createPostService,
+  getPostsService,
 };

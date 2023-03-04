@@ -1,6 +1,6 @@
 const express = require('express');
 const { createCategory, getAllCategories } = require('./controllers/category.controller');
-const { createPost } = require('./controllers/post.controller');
+const { createPost, getAllPosts } = require('./controllers/post.controller');
 const { login, createUser, getAllUsers, getUserById } = require('./controllers/user.controller');
 const {
   validateBody,
@@ -25,6 +25,8 @@ app.get('/user', validateToken, getAllUsers);
 app.get('/user/:id', validateToken, getUserById);
 
 app.get('/categories', validateToken, getAllCategories);
+
+app.get('/post', validateToken, getAllPosts);
 
 app.post('/login', validateBody, login);
 
