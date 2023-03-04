@@ -23,7 +23,16 @@ const createUserService = async (newUser) => {
   // } 
 };
 
+const getUsersService = async () => {
+  const data = await User.findAll({ attributes: { exclude: ['password'] } }); // verificado como excluir field em https://stackoverflow.com/questions/31679838/sequelizejs-findall-exclude-field
+  if (!data) {
+    return { message: 'Deu ruim' };
+  }
+  return data;
+};
+
 module.exports = {
   loginService,
   createUserService,
+  getUsersService,
 };

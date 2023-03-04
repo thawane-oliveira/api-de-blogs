@@ -1,3 +1,5 @@
+const { tokenValidate } = require('../aux/token');
+
 const validateBody = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -31,7 +33,23 @@ const validateNewUser = (req, res, next) => {
   next();
 };
 
+const validateToken = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) {
+    return res.status(401).json({ message: 'Token not found' });
+  }
+
+  try {
+    const decoded = tokenValidate(authorization);
+    req.body.userToken = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Expired or invalid token' });
+  }
+};
+
 module.exports = {
   validateBody,
   validateNewUser,
+  validateToken,
 };
