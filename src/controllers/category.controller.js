@@ -2,7 +2,6 @@ const { createCategoryService, getCategoriesService } = require('../services/cat
 
 const createCategory = async (req, res) => {
   const { name } = req.body;
-  console.log(name, 'controller');
   const result = await createCategoryService(name);
   if (result.message) {
     return res.status(400).json(result);

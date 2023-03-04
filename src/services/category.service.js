@@ -5,7 +5,6 @@ const createCategoryService = async (name) => {
     return { message: '"name" is required' };
   }
   const createdCategory = await Category.create({ name });
-  console.log(name, 'service', createdCategory);
   return createdCategory;
 };
 

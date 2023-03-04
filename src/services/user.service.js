@@ -6,7 +6,7 @@ const loginService = async (email, password) => {
   if (!data) {
     return { message: 'Invalid fields' };
   }
-  const token = tokenGenerate({ email });
+  const token = tokenGenerate({ email, id: data.dataValues.id });
   return { token };
 };
 
@@ -16,9 +16,9 @@ const createUserService = async (newUser) => {
   if (findInDB) {
     return { message: 'User already registered' };
   }
-  /* const insertUser =  */await User.create(newUser);
+   const insertUser = await User.create(newUser);
   // if (insertUser) {
-    const token = tokenGenerate({ email });
+    const token = tokenGenerate({ email, id: insertUser.dataValues.id });
     return { token };
   // } 
 };

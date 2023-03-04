@@ -12,6 +12,10 @@ const validateBody = (req, res, next) => {
 const validateNewUser = (req, res, next) => {
   const { email, password, displayName } = req.body;
 
+  // if (!displayName || !password || !email) {
+  //   return res.status(400).json({ message: 'bugou' });
+  // }
+
   if (displayName.length < 8) {
     return res.status(400).json({
       message: '"displayName" length must be at least 8 characters long',
