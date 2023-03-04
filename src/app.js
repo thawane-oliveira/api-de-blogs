@@ -1,23 +1,8 @@
 const express = require('express');
-const { createCategory, getAllCategories } = require('./controllers/category.controller');
-const {
-  createPost,
-  getAllPosts,
-  getPostById,
-  editPost,
-deletePost } = require('./controllers/post.controller');
-const {
-  login,
-  createUser,
-  getAllUsers,
-  getUserById } = require('./controllers/user.controller');
-const {
-  validateBody,
-  validateNewUser,
-  validateToken,
-  validateEmail, 
-  validateNewPost, 
-  validateCategories } = require('./middlewares/validate');
+const { categoryRouter } = require('./routes/categories');
+const { loginRouter } = require('./routes/login');
+const { postRouter } = require('./routes/post');
+const { userRouter } = require('./routes/user');
 // ...
 
 const app = express();
@@ -29,27 +14,13 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-app.get('/user', validateToken, getAllUsers);
+app.use('/user', userRouter);
 
-app.get('/user/:id', validateToken, getUserById);
+app.use('/post', postRouter);
 
-app.get('/categories', validateToken, getAllCategories);
+app.use('/categories', categoryRouter);
 
-app.get('/post', validateToken, getAllPosts);
-
-app.get('/post/:id', validateToken, getPostById);
-
-app.post('/login', validateBody, login);
-
-app.post('/categories', validateToken, createCategory);
-
-app.post('/post', validateToken, validateNewPost, validateCategories, createPost);
-
-app.post('/user', validateEmail, validateNewUser, createUser);
-
-app.delete('/post/:id', validateToken, deletePost);
-
-app.put('/post/:id', validateToken, editPost);
+app.use('/login', loginRouter);
 
 // ...
 
