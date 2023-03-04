@@ -41,7 +41,28 @@ const getPostsService = async () => {
   return data;
 };
 
+const getPostByIdService = async (id) => {
+  const data = await BlogPost.findByPk(id, {
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      {
+        model: Category,
+        as: 'categories',
+      },
+    ],
+  });
+  if (!data) {
+    return { message: 'Post does not exist' };
+  }
+  return data;
+};
+
 module.exports = {
   createPostService,
   getPostsService,
+  getPostByIdService,
 };

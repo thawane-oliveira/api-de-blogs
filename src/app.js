@@ -1,7 +1,11 @@
 const express = require('express');
 const { createCategory, getAllCategories } = require('./controllers/category.controller');
-const { createPost, getAllPosts } = require('./controllers/post.controller');
-const { login, createUser, getAllUsers, getUserById } = require('./controllers/user.controller');
+const { createPost, getAllPosts, getPostById } = require('./controllers/post.controller');
+const {
+  login,
+  createUser,
+  getAllUsers,
+  getUserById } = require('./controllers/user.controller');
 const {
   validateBody,
   validateNewUser,
@@ -27,6 +31,8 @@ app.get('/user/:id', validateToken, getUserById);
 app.get('/categories', validateToken, getAllCategories);
 
 app.get('/post', validateToken, getAllPosts);
+
+app.get('/post/:id', validateToken, getPostById);
 
 app.post('/login', validateBody, login);
 
