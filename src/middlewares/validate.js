@@ -9,29 +9,50 @@ const validateBody = (req, res, next) => {
   next();
 };
 
+const validateEmail = (req, res, next) => {
+  const { email } = req.body;
+  const regex = /^\S+@\S+\.\S+$/;
+
+  if (!email.match(regex) || !email) {
+    return res.status(400).json({
+      message: '"email" must be a valid email',
+    });
+  }
+  next();
+};
+
 const validateNewUser = (req, res, next) => {
-  const { email, password, displayName } = req.body;
+  const { password, displayName } = req.body;
 
-  // if (!displayName || !password || !email) {
-  //   return res.status(400).json({ message: 'bugou' });
-  // }
-
-  if (displayName.length < 8) {
+  if (!displayName || displayName.length < 8) {
     return res.status(400).json({
       message: '"displayName" length must be at least 8 characters long',
     });
   }
-  if (password.length < 6) {
+  if (!password || password.length < 6) {
     return res.status(400).json({
       message: '"password" length must be at least 6 characters long',
     });
   }
+  next();
+};
 
-  const regex = /^\S+@\S+\.\S+$/;
+const validateNewPost = (req, res, next) => {
+  const { title, content } = req.body;
 
-  if (!email.match(regex)) {
+  if (!title || !content) {
     return res.status(400).json({
-      message: '"email" must be a valid email',
+      message: 'Some required fields are missing',
+    });
+  }
+  next();
+};
+
+const validateCategories = (req, res, next) => {
+  const { categoryIds } = req.body;
+  if (!categoryIds) {
+    return res.status(400).json({
+      message: 'one or more "categoryIds" not found',
     });
   }
   next();
@@ -56,4 +77,7 @@ module.exports = {
   validateBody,
   validateNewUser,
   validateToken,
+  validateEmail,
+  validateNewPost,
+  validateCategories,
 };

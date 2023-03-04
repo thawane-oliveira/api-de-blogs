@@ -24,8 +24,6 @@ const createUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const { userToken } = req.body;
-  console.log(userToken);
   const users = await getUsersService();
   return res.status(200).json(users);
 };
