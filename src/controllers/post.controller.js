@@ -3,7 +3,8 @@ const {
   getPostsService,
   getPostByIdService,
   editPostService,
-  deletePostService } = require('../services/post.service');
+  deletePostService,
+  searchPostService } = require('../services/post.service');
 
 const createPost = async (req, res) => {
   const { title, content, userToken, categoryIds } = req.body;
@@ -45,10 +46,18 @@ const deletePost = async (req, res) => {
   return res.status(204).end();
 };
 
+const searchPost = async (req, res) => {
+  const { q } = req.query;
+  const data = await searchPostService(q);
+
+  return res.status(200).json(data);
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   editPost,
   deletePost,
+  searchPost,
 };

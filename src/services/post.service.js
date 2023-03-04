@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, PostCategory, Category, User } = require('../models');
 
 const findCategory = async (ctg) => {
@@ -91,10 +92,32 @@ const deletePostService = async (id, body) => {
   return {};
 };
 
+const searchPostService = async (query) => {
+  const data = await BlogPost.findAll({
+    where: {
+      // consultado sobre Op.or em https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } },
+        { content: { [Op.like]: `%${query}%` } },
+      ],
+    },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      { model: Category, as: 'categories' },
+    ],
+  });
+  return data;
+};
+
 module.exports = {
   createPostService,
   getPostsService,
   getPostByIdService,
   editPostService,
   deletePostService,
+  searchPostService,
 };

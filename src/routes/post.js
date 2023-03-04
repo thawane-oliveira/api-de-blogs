@@ -4,7 +4,9 @@ const {
   createPost,
   getPostById,
   deletePost,
-  editPost } = require('../controllers/post.controller');
+  editPost,
+  searchPost,
+} = require('../controllers/post.controller');
 const { validateToken, validateNewPost, validateCategories } = require('../middlewares/validate');
 
 const postRouter = express.Router();
@@ -12,6 +14,8 @@ const postRouter = express.Router();
 postRouter.get('/', validateToken, getAllPosts);
 
 postRouter.post('/', validateToken, validateNewPost, validateCategories, createPost);
+
+postRouter.get('/search', validateToken, searchPost);
 
 postRouter.get('/:id', validateToken, getPostById);
 
