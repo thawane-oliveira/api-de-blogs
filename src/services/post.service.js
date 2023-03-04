@@ -61,8 +61,27 @@ const getPostByIdService = async (id) => {
   return data;
 };
 
+const editPostService = async (id, body) => {
+  const { userToken, title, content } = body;
+  const data = await BlogPost.findByPk(id);
+  if (!data) return { message: 'Post does not exist' };
+
+  if (data.userId !== userToken.id) return { status: 401, message: 'Unauthorized user' };
+
+  if (!title || !content) return { status: 400, message: 'Some required fields are missing' };
+
+  await BlogPost.update({ title, content, updated: Date.now() }, { where: { id } });
+  return BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+      { model: Category, as: 'categories' },
+    ],
+  });
+};
+
 module.exports = {
   createPostService,
   getPostsService,
   getPostByIdService,
+  editPostService,
 };
